@@ -8,8 +8,12 @@ const formMessage = document.getElementById("formMessage");
 const faqQuestions = document.querySelectorAll(".faq-question");
 const testimonials = document.querySelectorAll(".testimonial");
 const prevTestimonial = document.getElementById("prevTestimonial");
-const nextTestimonial = document.getElementById("nextTestimonial");
+const nextTestimonial = document.getElementById("nextTestimonial");const contactForm = document.getElementById("contactForm");
 
+const openGmailCompose = ({ to, subject, body }) => {
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.open(gmailUrl, "_blank");
+};
 if (navToggle) {
   navToggle.addEventListener("click", () => {
     const expanded = navToggle.getAttribute("aria-expanded") === "true";
@@ -104,9 +108,35 @@ if (admissionForm) {
       return;
     }
 
-    formMessage.textContent = "Inquiry submitted successfully. We will contact you shortly.";
+    const recipient = "edisonkipkemoi319@gmail.com";
+    const subject = `Admission Inquiry: ${parentName} (${level})`;
+    const body = `Parent Name: ${parentName}\nEmail: ${email}\nPhone: ${phone}\nPreferred Level: ${level}\n\nMessage:\n${message}`;
+
+    openGmailCompose({ to: recipient, subject, body });
+    formMessage.textContent = "Opening Gmail compose...";
     formMessage.style.color = "#047857";
     admissionForm.reset();
+  });
+}
+
+if (contactForm) {
+  contactForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const contactName = document.getElementById("contactName").value.trim();
+    const contactMsg = document.getElementById("contactMsg").value.trim();
+
+    if (!contactName || !contactMsg) {
+      alert("Please enter your name and message before sending.");
+      return;
+    }
+
+    const recipient = "edisonkipkemoi319@gmail.com";
+    const subject = `Contact from ${contactName}`;
+    const body = `Name: ${contactName}\n\nMessage:\n${contactMsg}`;
+
+    openGmailCompose({ to: recipient, subject, body });
+    contactForm.reset();
   });
 }
 
