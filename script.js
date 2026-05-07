@@ -11,6 +11,14 @@ const prevTestimonial = document.getElementById("prevTestimonial");
 const nextTestimonial = document.getElementById("nextTestimonial");const contactForm = document.getElementById("contactForm");
 
 const openGmailCompose = ({ to, subject, body }) => {
+  const mailtoLink = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    window.location.href = mailtoLink;
+    return;
+  }
+
   const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   window.open(gmailUrl, "_blank");
 };
